@@ -1,17 +1,7 @@
-# Assuming a global dictionary to store User instances
-user_instances = {}
+from .users import User, user_instances
 
 ExpenseManager = {}
 
-class User:
-    def __init__(self, user_id, name, email, mobile_number):
-        self.user_id = user_id
-        self.name = name
-        self.email = email
-        self.mobile_number = mobile_number
-        self.balance = 0  # Initialize balance to zero
-        # Store the instance in the global dictionary
-        user_instances[user_id] = self
 
 class Expense:
     def __init__(self, paid_by: User, amount, user_count ,splits,percentages,split_type):
