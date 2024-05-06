@@ -25,6 +25,8 @@ class Expense:
                     split_amount = self.amount * (self.split_values[i] / 100)
                     self._update_balances(self.paid_by, user.user_id, split_amount)
 
+        return self
+
     def _update_balances(self, paid_by, user_id, split_amount):
         paid_by_user = User.user_instances[paid_by]
         user = User.user_instances[user_id]

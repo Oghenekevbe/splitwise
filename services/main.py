@@ -34,7 +34,14 @@ def main():
             # Parse the users list into User objects
             users = [User.user_instances[user_id] for user_id in users]
             # Create and split the expense
-            Expense(payer, amount, users, split_type, split_values).split_expense()
+            expense = Expense(payer, amount, users, split_type, split_values).split_expense()
+
+            # Print who owes who
+            for user in expense.users:
+                for user_id, amount in user.owes.items():
+                    owed_user = User.user_instances.get(user_id)
+                    if owed_user:
+                        print(f"{user.username} owes {owed_user.username}: {amount}")
 
         elif command[0] == 'SHOW':
             if len(command) > 1:
