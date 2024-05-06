@@ -1,3 +1,5 @@
 /venv
 
 /roughttest.py
+
+__pycache__/
