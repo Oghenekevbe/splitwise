@@ -38,7 +38,7 @@ def main():
 
             # Print who owes who
             for user in expense.users:
-                for user_id, amount in user.owes.items():
+                for user_id, amount in user.debtors.items():
                     owed_user = User.user_instances.get(user_id)
                     if owed_user:
                         print(f"{user.username} owes {owed_user.username}: {amount}")
@@ -48,8 +48,8 @@ def main():
                 user_id = command[1]
                 user = User.user_instances.get(user_id)
                 if user:
-                    if user.owes:
-                        for owed_user_id, amount in user.owes.items():
+                    if user.debtors:
+                        for owed_user_id, amount in user.debtors.items():
                             owed_user = User.user_instances.get(owed_user_id)
                             if owed_user:
                                 print(f"{user.username} owes {owed_user.username}: {amount}")
@@ -60,9 +60,9 @@ def main():
             else:
                 any_balance = False
                 for user in User.user_instances.values():
-                    if user.owes:
+                    if user.debtors:
                         any_balance = True
-                        for owed_user_id, amount in user.owes.items():
+                        for owed_user_id, amount in user.debtors.items():
                             owed_user = User.user_instances.get(owed_user_id)
                             if owed_user:
                                 print(f"{user.username} owes {owed_user.username}: {amount}")
