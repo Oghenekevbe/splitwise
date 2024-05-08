@@ -27,8 +27,14 @@ class Expense:
                         self._update_balances(self.paid_by, user.user_id, split_amount)
 
             return self
+        except KeyError as e:
+            print(f"KeyError occurred: {e}")
+        except ValueError as e:
+            print(f"ValueError occurred: {e}")
         except Exception as e:
             print(f"an error occurred: {e}")
+
+
 
 
 
@@ -39,30 +45,32 @@ class Expense:
 
             # Check if user already owes paid_by_user
             if user_id in paid_by_user.debtors:
-                owed_amount = paid_by_user.debtors[user_id]
-                if owed_amount > split_amount:
-                    paid_by_user.debtors[user_id] -= split_amount
-                    user.creditors[paid_by] -= split_amount
-                else:
+
+                paid_by_user.debtors[user_id] += split_amount
+                user.creditors[paid_by] += split_amount
+                if paid_by_user.debtors[user_id] == 0:
                     del paid_by_user.debtors[user_id]
-                    del user.creditors[paid_by]
-                    paid_by_user.creditors[user_id] = split_amount - owed_amount
-                    user.debtors[paid_by] = split_amount - owed_amount
+
             # Check if paid_by_user already owes user
             elif paid_by in user.debtors:
                 owed_amount = user.debtors[paid_by]
-                if owed_amount > split_amount:
+                if owed_amount >= split_amount:
                     user.debtors[paid_by] -= split_amount
                     paid_by_user.creditors[user_id] -= split_amount
-                else:
-                    del user.debtors[paid_by]
-                    del paid_by_user.creditors[user_id]
-                    user.creditors[paid_by] = split_amount - owed_amount
-                    paid_by_user.debtors[user_id] = split_amount - owed_amount
+                    if user.debtors[paid_by] == 0:
+                        del user.debtors[paid_by]
+
             # If neither user owes the other, then simply update the balances
             else:
-                paid_by_user.creditors[user_id] = split_amount
-                user.debtors[paid_by] = split_amount
-                
+                paid_by_user.debtors[user_id] = split_amount
+                user.creditors[paid_by] = split_amount
+            
+            print(f"{user_id} owes {paid_by} : {split_amount}  ")
+
+        except KeyError as e:
+            print(f"KeyError occurred: {e}")
+        except ValueError as e:
+            print(f"ValueError occurred: {e}")
         except Exception as e:
             print(f"an error occurred: {e}")
+

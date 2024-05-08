@@ -34,14 +34,7 @@ def main():
             # Parse the users list into User objects
             users = [User.user_instances[user_id] for user_id in users]
             # Create and split the expense
-            expense = Expense(payer, amount, users, split_type, split_values).split_expense()
-
-            # Print who owes who
-            for user in expense.users:
-                for user_id, amount in user.debtors.items():
-                    owed_user = User.user_instances.get(user_id)
-                    if owed_user:
-                        print(f"{user.username} owes {owed_user.username}: {amount}")
+            Expense(payer, amount, users, split_type, split_values).split_expense()
 
         elif command[0] == 'SHOW':
             if len(command) > 1:
@@ -49,10 +42,10 @@ def main():
                 user = User.user_instances.get(user_id)
                 if user:
                     if user.debtors:
-                        for owed_user_id, amount in user.debtors.items():
-                            owed_user = User.user_instances.get(owed_user_id)
-                            if owed_user:
-                                print(f"{user.username} owes {owed_user.username}: {amount}")
+                        for debtor_id, amount in user.debtors.items():
+                            debtor = User.user_instances.get(debtor_id)
+                            if debtor:
+                                print(f"{debtor.username} owes {user.username}: {amount}")
                     else:
                         print("No balance")
                 else:
@@ -62,10 +55,10 @@ def main():
                 for user in User.user_instances.values():
                     if user.debtors:
                         any_balance = True
-                        for owed_user_id, amount in user.debtors.items():
-                            owed_user = User.user_instances.get(owed_user_id)
-                            if owed_user:
-                                print(f"{user.username} owes {owed_user.username}: {amount}")
+                        for debtor_id, amount in user.debtors.items():
+                            debtor = User.user_instances.get(debtor_id)
+                            if debtor:
+                                print(f"{debtor.username} owes {user.username}: {amount}")
                 if not any_balance:
                     print("No balance")
         elif command[0] == 'EXIT':
